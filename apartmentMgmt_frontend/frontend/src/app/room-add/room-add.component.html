@@ -6,13 +6,13 @@
 
 <div class="container-fluid">
 
-<div class="card" ng-init="getTowersByBuildingId()">
+<div class="card">
   <div class="card-header">Master Data > Building > Room > Add Room </div>
  
   <div class="card-body">
      <div class="row">
         <div class="col-md-12">
-           <form ng-submit="addRoom()" name="roomAdd">
+           <form (ngSubmit)="addRoom()" name="roomAdd">
               <input type="hidden" name="_csrf" />
               <div class="form-group">
                  <label for="roomNo">Room No.</label>
@@ -208,32 +208,20 @@
               <ng-template #userDetailsDropDown let-r="result" let-t="term">
                <ngb-highlight [result]="r.name.first+' '+r.name.last" [term]="t"></ngb-highlight>
              </ng-template>
+
+            <br>
+             <button type="submit" class="btn btn-primary zz-float-right">Add Room</button>
+            </form>
+         </div>
+      </div>
+   </div>
+ </div>
+ </div>
 <!--
              
 -->
               <!-- others living in the same room -->
 <!--
-              <uib-accordion>
-                 <div uib-accordion-group class="panel-default" heading="Others Living">
-                    <div class="row">
-                       <div class="col-md-12 ">
-                          <div class="form-group" ng-repeat="otherLiving in room.others.othersLiving track by $index">
-                             <div class="input-group">
-                                <input type="text" class="form-control" id="prevRent" placeholder="Who else lives here" ng-model="room.others.otherLiving[$index]">
-                                <a href="" class="input-group-addon nounderline" ng-click="deleteOthersLiving()">
-                                Remove</a>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <button type="button" class="btn btn-info form-control" ng-click="addOthersLiving()">Add others living</button>
-                 </div>
-              </uib-accordion>
-              <button type="submit" class="btn btn-primary">Add</button>
-           </form>
-        </div>
-     </div>
-  </div>
-</div>
-</div>
+              
+            
 -->

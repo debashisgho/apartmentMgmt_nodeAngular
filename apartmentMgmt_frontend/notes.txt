@@ -19,3 +19,4 @@ references
 ----------
 name="towerOptions" id="towerOptions"  [(ngModel)]="selectedTowerId"
 <option *ngFor="let tower of towers" value="{{tower._id}}">{{tower.name}}</option>
+ <form (ngSubmit)="addRoom()" name="roomAdd">

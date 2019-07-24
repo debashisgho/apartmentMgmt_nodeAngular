@@ -123,6 +123,34 @@ addOthersLiving = function(){
 deleteOthersLiving = function($index:number){
   this.room.others.othersLiving.splice($index,1);
 }
+
+addRoom= function(){
+	console.log("add room function called");
+	$scope.roomAdd.$setPristine();//the form is submitted, so reset to pristine
+
+	this.room.building = this.buildingId;
+	this.room.tower = this.selectedTowerId;
+	this.room.area_details.measurementUnit = this.measurementAreaUnit;
+	console.log(this.room);
+
+
+	$http.post('/aptmgmt/api/masterdata/building/tower/room', this.room).then(function(response){
+			console.log(response);
+			console.log('-------'+response.data.status+" : "+response.data.message);
+			var statusCode = "F";
+			
+			if(response.data.status < 400)
+			{
+				statusCode= "S";
+			}
+
+			this.response = {
+				"status":statusCode,
+				"message":response.data.message
+			};
+			
+		});
+};
     
 
    
