@@ -1,0 +1,56 @@
+Development in this project is halted. 
+it is getting re-written in angular 7. 
+
+package.json
+----------------
+mention dependencies in package.json
+run below command to install the defined node modules
+"npm install" 
+
+
+Sample
+-------
+Auth with passport
+https://scotch.io/tutorials/easy-node-authentication-setup-and-local
+Auth with connect/mozilla plug in
+https://www.youtube.com/watch?v=yvviEA1pOXw
+
+
+Database 
+----------------------
+- use aptmgmt
+- db.createCollection('users')
+- db.createCollection('masterdatacategory')
+
+
+Start App
+-----------
+To test use command "nodemon"
+
+public folder
+-------------------------
+installed the following bower dependencies in public folder 
+    bower install --save bootstrap angular angular-route jquery
+
+Sample bootstrap themes
+------------------------
+https://bootswatch.com
+
+References
+https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1
+
+Special handling
+----------------
+- used $rootScope in index.html and home.js to get user.name variable in navbar
+- used ng-cloak directive in index.html before user.name variable to stop displaying angular expression for a second during page load.
+- use ng-click to simulate click in index.html for log out action
+
+
+http response
+-----------------
+status - 201 - to indicate successful operation
+status - 409 - to indicate data issue in the input (like user is already registered)
+status - 400 - failed operation (like login failure)
+status - 402 - data issue in the backend (multiple user found with same email id)
+status - 401 - unauthorized
+

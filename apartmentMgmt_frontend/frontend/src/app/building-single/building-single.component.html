@@ -1,0 +1,168 @@
+<br>
+
+<div *ngIf="response.status.toUpperCase()=='F'" class="zz-response  bg-danger">Failed - {{response.message}}</div>
+<div *ngIf="response.status.toUpperCase()=='S'" class="zz-response  bg-success">Success - {{response.message}}</div>
+
+<br>
+
+<div class="container-fluid">
+      <div class="clearfix">
+            <button type="button" class="btn btn-info btn-large zz-float-right" (click)="editForm()" > {{formEditButtonText}}</button>
+      </div>
+<div class="card">
+   <div class="card-header">
+      Master Data > Building
+   </div>
+   <div class="card-body">
+      <div class="row">
+         <div class="col-md-12">
+            <form  name="buildingInfo">
+               <input type="hidden" name="_csrf"/>
+               <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Building Name" [(ngModel)]="building.name" [attr.disabled]="!formEditMode ? '':null">
+               </div>
+               <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" id="email" name ="email" placeholder="Email ID" [(ngModel)]="building.contact.email" [attr.disabled]="!formEditMode ? '':null">
+               </div>
+               <!-- phone Num section -->
+               <div class="form-group">
+               <ngb-accordion [closeOthers]="true" >
+                  <ngb-panel id="phoneNumbers" title="Phone Numbers">
+                     <ng-template ngbPanelContent>
+                        <div class="row" >
+                           <div class="col-md-12 ">
+                              <div class="form-group" *ngFor="let phone of building.contact.phone ; let i=index; trackBy:trackByFn">
+                                 <div class="input-group">
+                                    <input type="text" class="form-control" id="phone" placeholder="Phone Num" name="phone{{i}}" [(ngModel)]="building.contact.phone[i]" [attr.disabled]="!formEditMode ? '':null">                                                                      
+                                    <button type="button" class="input-group-addon btn btn-danger" (click)="deletePhone(i)" [hidden]="!formEditMode">Remove</button>
+                                    
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <button type="button" class="btn btn-info" (click)="addAnotherPhone()" [hidden]="!formEditMode">Add another</button>
+                     </ng-template>
+                   </ngb-panel>
+               
+            
+                  <ngb-panel id ="address" title="Address">
+                     <ng-template ngbPanelContent>
+                     <div class="col-md-12 ">
+                        <div class="form-group">
+                           <label for="address1">Address1</label>
+                           <input type="text" class="form-control" id="address1" placeholder="Address Line1"  name ="address1" [(ngModel)]="building.address.address1" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="address2">Address2</label>
+                           <input type="text" class="form-control" id="address2" placeholder="Address Line2" name="address2" [(ngModel)]="building.address.address2" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="address3">Address3</label>
+                           <input type="text" class="form-control" id="address3" placeholder="Address Line3" name="address3" [(ngModel)]="building.address.address3" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="postOffice">Post Office</label>
+                           <input type="text" class="form-control" id="postOffice" placeholder="Post Office" name="postOffice" [(ngModel)]="building.address.postOffice" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="city_vill">City/Village</label>
+                           <input type="text" class="form-control" id="city_vill" placeholder="City/Village" name="city_vill" [(ngModel)]="building.address.city_vill" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="district">District</label>
+                           <input type="text" class="form-control" id="district" placeholder="District" name="district" [(ngModel)]="building.address.district" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="state">State</label>
+                           <input type="text" class="form-control" id="state" placeholder="State" name="state" [(ngModel)]="building.address.state" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="country">Country</label>
+                           <input type="text" class="form-control" id="country" placeholder="Country" name="country" [(ngModel)]="building.address.country" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="pin">Pin</label>
+                           <input type="text" class="form-control" id="pin" placeholder="Pin Code" name="pin" [(ngModel)]="building.address.pin" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                        <div class="form-group">
+                           <label for="landmark">Landmark</label>
+                           <input type="text" class="form-control" id="landmark" placeholder="Landmark" name="landmark" [(ngModel)]="building.address.landmark" [attr.disabled]="!formEditMode ? '':null">
+                        </div>
+                     </div>
+                  </ng-template>
+                  </ngb-panel>
+              
+               <!-- Committee members section -->
+              
+               <!-- the below is almost working with a copy of the building.committeeMembers-->
+              
+               
+              
+                  <ngb-panel id="committeeMembers" title="Committee Members">
+                     <ng-template ngbPanelContent>
+                     <div class="col-md-12 ">
+                        <div class="form-group" *ngFor="let cMember of tempUserDetailsArr; let i = index; trackBy:trackByFn">
+                           <div class="input-group">
+                              <input type="text" name="designation{{i}}" [(ngModel)]="tempUserDetailsArr[i].designation" class="form-control" placeholder="Designation"  [attr.disabled]="!formEditMode ? '':null">
+                              <span class="input-group-btn"  style="width:0px;"></span>
+                                 
+                             <!--<input id="typeahead-basic" type="text" class="form-control" placeholder="Currently owned by" id="currOwner{{i}}" name=currOwner{{i}} [(ngModel)]="room.owner_details.current[i]" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" />-->                    
+                             <input id="typeahead-basic" type="text" class="form-control" id="userDetails{{i}}" name=userDetails{{i}} [(ngModel)]="tempUserDetailsArr[i].userDetails" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" [hidden]="!formEditMode"/>
+
+                             <span  class="form-control" [hidden]="formEditMode" *ngIf="cMember.userDetails != null && cMember.userDetails.name != null" >
+                              <a href="/aptmgmt/masterdata/user/{{cMember.userDetails._id}}" >{{cMember.userDetails.name.first}}&nbsp;{{cMember.userDetails.name.last}}</a>
+                             </span>   
+                             
+                             
+                             <span  class="form-control" [hidden]="formEditMode" *ngIf ="building.committeeMembers[i] != null">
+                              <a href="/aptmgmt/masterdata/user/{{building.committeeMembers[i].user_id}}">{{building.committeeMembers[i].name.first}}&nbsp;{{building.committeeMembers[i].name.last}}</a>
+                             </span> 
+                           
+
+                              <button class="input-group-addon btn btn-danger" (click)="deleteCommitteeMember(i)" [hidden]="!formEditMode" >
+                              Remove</button>
+                           </div>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-info" (click)="addCommitteeMember()" [hidden]="!formEditMode" >Add another</button>
+                  </ng-template>
+                  </ngb-panel>
+               
+               
+              
+               <!-- Room Details -->
+               
+               
+                  <ngb-panel id="roomDetails" title="Room Details">
+                     <ng-template ngbPanelContent>
+                     <div class="col-md-12 ">
+                        <div class="form-group">
+                          
+                           <a class="btn btn-success" routerLink="/aptmgmt/masterdata/building/{{building._id}}/tower/rooms">Show Rooms</a>
+                        </div>
+                     </div>
+                  </ng-template>
+                  </ngb-panel>
+               </ngb-accordion>
+            </div> 
+               
+               <!-- Associated Emails -->         
+               <div class="form-group">
+                  <label for="associatedEmails">Associated Emails</label>
+                  <input type="text" class="form-control" id="associatedEmails" placeholder="Associated Emails" name="associatedEmails" [(ngModel)]="building.associatedEmails" [attr.disabled]="!formEditMode ? '':null">
+               </div>
+               <button type="submit" class="btn btn-primary" [hidden]="!formEditMode" (click)="updateBuilding()">Update</button>
+              
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+
+
+<ng-template #userDetailsDropDown let-r="result" let-t="term">
+   <ngb-highlight [result]="r.name.first+' '+r.name.last" [term]="t"></ngb-highlight>
+ </ng-template>

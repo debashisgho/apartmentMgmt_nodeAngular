@@ -1,0 +1,51 @@
+<a href="/aptmgmt/login">Login</a>
+
+   
+  <div
+       ng-class="{'bg-danger': response.status == 'F' , 'bg-success': response.status == 'S'} ">
+        {{response.status}} {{response.message}}
+  </div>
+
+<br>
+<div class="panel panel-default" ng-show="response.status!='S'">
+  <div class="panel-heading">
+    <h3 class="panel-title">Register</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-12">     
+       
+  <form ng-submit="registerUser()">
+
+  <input type="hidden" name="_csrf"/>
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" placeholder="First Name" ng-model="user.name.first">
+      </div>  
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Last Name" ng-model="user.name.last">
+      </div>   
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" id="email" placeholder="Email" ng-model="user.email">
+      </div>   
+      <div class="form-group">
+        <label for="firstName">Phone</label>
+        <input type="text" class="form-control" id="phonePrimary" placeholder="Primary Number" ng-model="user.phone.primary">
+        <input type="text" class="form-control" id="phoneAlternate1" placeholder="Alternate Number1" ng-model="user.phone.alternate1">
+        <input type="text" class="form-control" id="phoneAlternate2" placeholder="Alternate Number2" ng-model="user.phone.alternate2">
+        <input type="text" class="form-control" id="phoneAlternate3" placeholder="Alternate Number3" ng-model="user.phone.alternate3">
+      </div>    
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="password" ng-model="user.password">
+        <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirm password" ng-model="user.passwordConfirm">
+      </div>
+       <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+      </div>
+    </div>
+  </div>
+</div>

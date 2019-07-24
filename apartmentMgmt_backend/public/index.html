@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>Apartment Management</title>
+	 <base href="/">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  
+<!-- disable jquery import if you use ui.bootstrap -->
+ <!--  <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script> -->
+
+  <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script> 
+
+<!-- disable bootstrap.js if you use ui.bootstrap -->
+ <!--  <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+ -->
+ <!-- angular animate is must for ui-bootstrap . during testing it was found ui.bootstrap is working without it-->
+  <!--  <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script> --> 
+
+  <!-- import ui.bootstrap.js if you do not use bootstrap.js -->
+   <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+   <script type="text/javascript" src="bower_components/angular-bootstrap-tpls/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
+<!--    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script> -->
+
+
+  <!-- The next section is for using md-autocomplete. keep it only if you use google material design...if it does not work delete the below four dependency aria,animate, messages, material -->
+  <!-- <link rel="stylesheet" type="text/css" href="bower_components/angular-material/angular-material.min.css">
+  <script type="text/javascript" src="bower_components/angular-aria/angular-aria.min.js"></script> 
+  <script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script> 
+  <script type="text/javascript" src="bower_components/angular-material/angular-material.min.js"></script> 
+  <script type="text/javascript" src="bower_components/angular-messages/angular-messages.min.js"></script> -->
+   
+
+
+<!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+<script type="text/javascript" src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.4/angular-material.js"></script>  -->
+
+
+  
+  
+  
+
+  <script src="/app.js"></script>
+  <script type="text/javascript" src="/services/services.js"></script>  
+  <script type="text/javascript" src="/controllers/home_NoLogIn.js"></script>
+  <script type="text/javascript" src="/controllers/home_LoggedIn.js"></script>
+  <script type="text/javascript" src="/controllers/masterdata/masterdata.js"></script>
+  <script type="text/javascript" src="/controllers/masterdata/building/building.js"></script>
+  <script type="text/javascript" src="/controllers/masterdata/room/room.js"></script>
+  <script type="text/javascript" src="/controllers/earning.js"></script>
+  <script type="text/javascript" src="/controllers/login.js"></script>
+  <script type="text/javascript" src="/controllers/logout.js"></script>
+  <script type="text/javascript" src="/controllers/register.js"></script>
+  <script type="text/javascript" src="/controllers/profile.js"></script>
+  
+
+</head>
+<body>
+<!-- <script>
+        var myApp = angular.module("myApp",[
+            "ngMaterial"
+        ]);
+        myApp.controller("MyController",function($scope){
+            $scope.buttonName= "Click Me"
+        });
+</script> -->
+	
+	 <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/aptmgmt">Apartment Management</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/aptmgmt/masterdata">Master Data</a></li>
+            <li><a href="/aptmgmt/earning">Earning</a></li>            
+            <li><a href="/aptmgmt/expense">Expenses</a></li>
+            <li><a href="/aptmgmt/report">Reports</a></li>
+            <li><a href="/aptmgmt/notice">Notice</a></li>
+            <li><a href="/aptmgmt/about">About</a></li>
+            <li><a href="/aptmgmt/contact">Contact</a></li>
+          </ul>
+
+          <!-- this next ul is designed for bootstrap.js -->
+          <!-- <ul class="nav navbar-nav navbar-right" ng-show="user.name.first!=null">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ng-cloak>{{user.name.first}}<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li ng-controller="MyProfileController"><a href="/aptmgmt/myProfile">My Profile</a></li>
+                <li ng-controller="LogoutController"><a href="" ng-click="logout()">Log Out</a></li>
+              </ul>
+            </li>
+          </ul> -->
+          
+            <!-- this next ul was designed for ui.bootstrap -->
+          <ul class="nav navbar-nav navbar-right" ng-show="user.name.first!=null">
+        
+            <li class="dropdown" uib-dropdown="" style="">
+                    <a  class="dropdown-toggle" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="false">
+                        {{user.name.first}} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+         <li ng-controller="MyProfileController"><a href="/aptmgmt/myProfile">My Profile</a></li>
+         <li ng-controller="LogoutController"><a href="" ng-click="logout()">Log Out</a></li>
+      </ul>
+                </li>
+          </ul>
+          </div>
+
+<!-- 
+   <span uib-dropdown on-toggle="toggled(open)">
+      <a href id="simple-dropdown" uib-dropdown-toggle>{{user.name.first}}<span class="caret"></span></a>
+      <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="simple-dropdown">
+         <li ng-controller="MyProfileController"><a href="/aptmgmt/myProfile">My Profile</a></li>
+         <li ng-controller="LogoutController"><a href="" ng-click="logout()">Log Out</a></li>
+      </ul>
+   </span> -->
+
+
+        
+      </div>
+    </nav>
+
+
+
+    <div class="container-fluid">
+    	<div class="row">
+    		<div class="col-md-12">
+    			<div ng-view></div>
+    		</div>
+    	</div>
+    </div>
+
+    <!-- /.container -->
+
+
+</body>
+</html>

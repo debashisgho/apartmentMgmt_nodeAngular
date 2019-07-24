@@ -1,0 +1,27 @@
+
+<br>
+<div class="container-fluid">
+<div class="card">
+  <div class="card-header">
+		Master Data Maintenance
+	</div>
+
+  <div class="card-body">
+		<div class ="row">
+    <div *ngFor="let masterdata of masterDataL" class="col-md-4">
+			
+				<div class="col-md-6 zz-float-left">    			
+					<h4 class="capitalize">{{masterdata.type}}</h4>
+					<p>{{masterdata.description}}</p>
+					<a class="btn btn-primary" routerLink="/aptmgmt/masterdata/{{masterdata.type}}">View Details</a>
+				</div>
+				<div class="col-md-6 zz-float-left">
+					<img class="thumbnail width50Percent" src="{{masterdata.img_url}}">
+				</div>
+			
+			</div>
+    </div>
+  </div>
+</div>
+</div>
+

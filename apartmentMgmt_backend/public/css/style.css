@@ -1,0 +1,35 @@
+.width50Percent{
+	width: 50%;
+}
+
+.capitalize{
+	text-transform: capitalize;
+}
+
+.nounderline{
+	text-decoration: none !important;
+}
+
+/*.deleteBtn{
+	background-color: #d9534f !important;
+	border-color: : #d43f3a !important;
+	color: white !important;
+	border-radius: 4px !important;
+	border:1px solid transparent !important;
+}
+*/
+/*for panel title for uib-accordion from ui.bootstrap - change color*/
+
+uib-accordion [class=panel-title] a span{
+	color: #337ab7;
+}
+
+/*for anchor tags in panel title for uib-accordion from ui.bootstrap - do not show the underline*/
+
+uib-accordion [class=panel-title] a {
+	text-decoration: none !important;
+}
+
+.btn-info:disabled{
+	color: black !important;
+}

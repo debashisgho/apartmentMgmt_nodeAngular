@@ -1,0 +1,239 @@
+<br>
+
+<div *ngIf="response.status.toUpperCase()=='F'" class="zz-response  bg-danger">Failed - {{response.message}}</div>
+<div *ngIf="response.status.toUpperCase()=='S'" class="zz-response  bg-success">Success - {{response.message}}</div>
+
+
+<div class="container-fluid">
+
+<div class="card" ng-init="getTowersByBuildingId()">
+  <div class="card-header">Master Data > Building > Room > Add Room </div>
+ 
+  <div class="card-body">
+     <div class="row">
+        <div class="col-md-12">
+           <form ng-submit="addRoom()" name="roomAdd">
+              <input type="hidden" name="_csrf" />
+              <div class="form-group">
+                 <label for="roomNo">Room No.</label>
+                 <input type="text" class="form-control" id="roomNo" name="roomNo" placeholder="Room Number"  [(ngModel)]="room.roomNo">
+              </div>
+              <div class="form-group">
+                 <label for="tower">Tower</label>
+                 <select name="towerOptions" id="towerOptions" name="towerOptions" [(ngModel)]="selectedTowerId" class="form-control">
+                  <option *ngFor="let tower of towers" value="{{tower._id}}">{{tower.name}}</option>
+                </select>
+
+              </div>
+
+              
+
+              <div class="form-group">
+                 <label for="floorNo">Floor No</label>
+                 <input type="text" class="form-control" id="floorNo" name="floorNo" placeholder="Floor Number" [(ngModel)]="room.floorNo">
+              </div>
+              <div class="form-group">
+                 <label for="area">Area (Sq.ft)</label>
+                 <div class="input-group">
+                    <input type="text" class="form-control" id="area" name="area" placeholder="Carpet Area" [(ngModel)]="room.area_details.area">
+                    <span class="input-group-addon">
+                    {{measurementAreaUnit}}
+                    </span>
+                 </div>
+              </div>
+               
+              
+
+              <ngb-accordion [closeOthers]="true" ><!-- start of main accordion-->
+                  <ngb-panel id="owners" title="Owners"><!-- owner details starts -->
+                     <ng-template ngbPanelContent>
+                        <div class="row" >
+                           <div class="col-md-12 ">
+                              <div class="form-group" *ngFor="let currOwner of room.owner_details.current ; let i=index; trackBy:trackByFn">
+                                 <div class="input-group">
+                                    <input id="typeahead-basic" type="text" class="form-control" placeholder="Currently owned by" id="currOwner{{i}}" name=currOwner{{i}} [(ngModel)]="room.owner_details.current[i]" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" />                    
+                                    <!--<input type="text" class="form-control" id="currOwner{{i}}" placeholder="Currently owned by" name="currOwner{{i}}" [(ngModel)]="room.owner_details.current[i].name.fullName" >  -->                                                                    
+                                    <button type="button" class="input-group-addon btn btn-danger " (click)="deleteCurrentOwner(i)">Remove</button>
+                                    
+                                 </div>
+                              </div>   
+                           </div>
+                        </div>
+                        <button type="button" class="btn btn-info zz-float-right" (click)="addCurrentOwner()" >Add Current Owner</button>
+                        <br>
+                        <br>                     
+                        <ngb-accordion><!--prev owner starts-->
+                           <ngb-panel id="prevOwners" title="Previous Owners">
+                              <ng-template ngbPanelContent>
+                                 <div class="row" >
+                                    <div class="col-md-12 ">
+                                       <div class="form-group" *ngFor="let prevOwner of room.owner_details.previous ; let i=index; trackBy:trackByFn">
+                                          <div class="input-group">
+                                             <!--<input type="text" class="form-control" id="prevOwner{{i}}" placeholder="Previously owned by" name=prevOwner{{i}} [(ngModel)]="room.owner_details.previous[i].name.fullName">-->
+                                             <input id="typeahead-basic" type="text" class="form-control" placeholder="Previously owned by" id="prevOwner{{i}}" name=prevOwner{{i}} [(ngModel)]="room.owner_details.previous[i]" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" />                    
+                                             <button type="button" class="input-group-addon btn btn-danger" (click)="deletePreviousOwner(i)">Remove</button>
+                                             <br>
+                                                                              
+                                             
+                                          </div>
+                                          
+                                          <div class="form-inline"> <!-- prev owner date starts-->
+                                             <div class="form-group">
+                                                
+                                                <div class="input-group" id="prevOwnerFromDate">
+                                                
+                                                   <input class="form-control" placeholder="Owner start date" name="prevOwner{{i}}FromDate" [(ngModel)]="room.owner_details.previous[i].fromDate" ngbDatepicker #prevOwnerFromDate="ngbDatepicker" [placement]="top">
+                                                   <div class="input-group-append">
+                                                   <button class="btn btn-outline-secondary calendar" (click)="prevOwnerFromDate.toggle()" type="button"></button>
+                                                   </div>
+                                                </div>
+
+                                                &nbsp;
+
+                                                <div class="input-group" id="prevOwnerToDate">
+                                                   
+                                                   <input class="form-control" placeholder="Owner end date" name="prevOwner{{i}}ToDate" [(ngModel)]="room.owner_details.previous[i].toDate" ngbDatepicker #prevOwnerToDate="ngbDatepicker" [placement]="top">
+                                                   <div class="input-group-append">
+                                                   <button class="btn btn-outline-secondary calendar" (click)="prevOwnerToDate.toggle()" type="button"></button>
+                                                   </div>
+                                                   
+                                                </div>
+                                                
+                                             </div>
+                                       </div><!-- prev owner date ends-->
+                                       </div>
+                                    </div>
+                                 </div>
+                                 
+                                 <button type="button" class="btn btn-info zz-float-right" (click)="addPreviousOwner()" >Add Previous Owner</button>                              
+                              </ng-template>
+                           </ngb-panel>
+                        </ngb-accordion><!--prev owner ends-->
+                     </ng-template>                  
+                  </ngb-panel> <!--owner detail ends-->
+
+                  
+
+                  <ngb-panel id="rentDetails" title="Rent Details"><!-- rent details starts -->
+                     <ng-template ngbPanelContent>
+                        <div class="row" >
+                           <div class="col-md-12 ">
+                              
+                              <div class="form-group" *ngFor="let currRent of room.rent_details.current ; let i=index; trackBy:trackByFn">
+                                 <div class="input-group">
+                                    <!--<input type="text" class="form-control" id="currRent{{i}}" placeholder="Currently rented to" name="currRent{{i}}" [(ngModel)]="room.rent_details.current[i].name.fullName" >  -->
+                                    <input id="typeahead-basic" type="text" class="form-control" placeholder="Currently rented to" id="currRent{{i}}" name=currRent{{i}} [(ngModel)]="room.rent_details.current[i]" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" />                                                                                        
+                                    <button type="button" class="input-group-addon btn btn-danger" (click)="deleteCurrentRent(i)">Remove</button>
+                                    
+                                 </div>
+                              </div>
+                              
+                           </div>
+                        </div>
+                        <button type="button" class="btn btn-info zz-float-right" (click)="addCurrentRent()" >Add Current Rent</button>
+                        <br>
+                        <br>                     
+                        <ngb-accordion><!--prev rent starts-->
+                           <ngb-panel id="prevRentDetails" title="Previous Rent Details">
+                              <ng-template ngbPanelContent>
+                                 <div class="row" >
+                                    <div class="col-md-12 ">
+                                       <div class="form-group" *ngFor="let prevRent of room.rent_details.previous ; let i=index; trackBy:trackByFn">
+                                          <div class="input-group">
+                                             <!--<input type="text" class="form-control" id="prevRent{{i}}" placeholder="Previously rented to" name=prevRent{{i}} [(ngModel)]="room.rent_details.previous[i].name.fullName">-->
+                                             <input id="typeahead-basic" type="text" class="form-control" placeholder="Previously rented to" id="prevRent{{i}}" name=prevRent{{i}} [(ngModel)]="room.rent_details.previous[i]" [ngbTypeahead]="_commonUtils.searchUserDetailsByNameUI"  [resultTemplate]="userDetailsDropDown" [inputFormatter]="_commonUtils.formatUserSearchDropdown" />                                                                                        
+                                             <button type="button" class="input-group-addon btn btn-danger" (click)="deletePreviousRent(i)">Remove</button>
+                                             <br>
+                                                                              
+                                             
+                                          </div>
+                                          
+                                          <div class="form-inline"> <!-- prev rent date starts-->
+                                             <div class="form-group">
+                                                
+                                                <div class="input-group" id="prevRentFromDate">
+                                                
+                                                   <input class="form-control" placeholder="Rent start date" name="prevRent{{i}}FromDate" [(ngModel)]="room.rent_details.previous[i].fromDate" ngbDatepicker #prevRentFromDate="ngbDatepicker" [placement]="top">
+                                                   <div class="input-group-append">
+                                                   <button class="btn btn-outline-secondary calendar" (click)="prevRentFromDate.toggle()" type="button"></button>
+                                                   </div>
+                                                </div>
+
+                                                &nbsp;
+
+                                                <div class="input-group" id="prevRentToDate">
+                                                   
+                                                   <input class="form-control" placeholder="Rent end date" name="prevRent{{i}}ToDate" [(ngModel)]="room.rent_details.previous[i].toDate" ngbDatepicker #prevRentToDate="ngbDatepicker" [placement]="top">
+                                                   <div class="input-group-append">
+                                                   <button class="btn btn-outline-secondary calendar" (click)="prevRentToDate.toggle()" type="button"></button>
+                                                   </div>
+                                                   
+                                                </div>
+                                                
+                                             </div>
+                                       </div><!-- prev rent date ends-->
+                                       </div>
+                                    </div>
+                                 </div>
+                                 
+                                 <button type="button" class="btn btn-info zz-float-right" (click)="addPreviousRent()" >Add Previous Rent Details</button>                              
+                              </ng-template>
+                           </ngb-panel>
+                        </ngb-accordion><!--prev owner ends-->
+                     </ng-template>                  
+                  </ngb-panel> <!--rent detail ends-->
+                  
+
+                  <ngb-panel id="othersLiving" title="Others living"><!-- others living in the same apartment-->
+                     <ng-template ngbPanelContent>
+                           <div class="row">
+                                 <div class="col-md-12 ">
+                                    <div class="form-group" *ngFor="let otherLiving of room.others.othersLiving; let i=index; trackBy:trackByFn">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" id="othersLiving{{i}}" placeholder="Who else lives here" name="othersLiving{{i}}" [(ngModel)]="room.others.othersLiving[i].name.fullName">                                          
+                                          <button type="button" class="input-group-addon btn btn-danger" (click)="deleteOthersLiving(i)">Remove</button>
+                                          
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>                              
+                              <button type="button" class="btn btn-info zz-float-right" (click)="addOthersLiving()" >Add others living</button>
+                           
+                     </ng-template>
+                  </ngb-panel>
+              </ngb-accordion> <!--end of main accordion -->
+           
+
+
+              <ng-template #userDetailsDropDown let-r="result" let-t="term">
+               <ngb-highlight [result]="r.name.first+' '+r.name.last" [term]="t"></ngb-highlight>
+             </ng-template>
+<!--
+             
+-->
+              <!-- others living in the same room -->
+<!--
+              <uib-accordion>
+                 <div uib-accordion-group class="panel-default" heading="Others Living">
+                    <div class="row">
+                       <div class="col-md-12 ">
+                          <div class="form-group" ng-repeat="otherLiving in room.others.othersLiving track by $index">
+                             <div class="input-group">
+                                <input type="text" class="form-control" id="prevRent" placeholder="Who else lives here" ng-model="room.others.otherLiving[$index]">
+                                <a href="" class="input-group-addon nounderline" ng-click="deleteOthersLiving()">
+                                Remove</a>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <button type="button" class="btn btn-info form-control" ng-click="addOthersLiving()">Add others living</button>
+                 </div>
+              </uib-accordion>
+              <button type="submit" class="btn btn-primary">Add</button>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+</div>
+-->

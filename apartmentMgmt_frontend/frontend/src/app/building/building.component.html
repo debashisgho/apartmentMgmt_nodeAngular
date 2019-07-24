@@ -1,0 +1,36 @@
+<br>
+<div class="container-fluid">
+<div class="card">
+  <div class="card-header">
+    Master Data > Buildings
+  </div>
+  <div class="card-body">
+   <div class="container">
+      <a class="btn btn-info form-control" routerLink="/aptmgmt/masterdata/building/add">Add new Building</a>
+      <br>
+  <br>  
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr class="active">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Pin Code</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let building of buildings">
+          <td><a routerLink="/aptmgmt/masterdata/building/{{building._id}}">{{building.name}}</a></td>      
+         
+          <td>{{building.details.type}}</td>
+          <td>{{building.address.pin}}</td>
+          <td>{{building.contact.email}}</td>
+
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+</div>
+
+

@@ -1,0 +1,33 @@
+<div class="panel panel-default" ng-init="getBuildings()">
+  <div class="panel-heading">
+    <h3 class="panel-title">Master Data > Buildings</h3>
+  </div>
+  <div class="panel-body">
+   <div class="container">
+      <a class="btn btn-info form-control" href="/aptmgmt/masterdata/building/add">Add new Building</a>
+      <br>
+  <br>  
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr class="active">
+          <th>Name</th>
+          <th>Type</th>
+          <th>Pin Code</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="building in buildings">
+          <td><a href="/aptmgmt/masterdata/building/{{building._id}}">{{building.name}}</a></td>
+          <td>{{building.details.type}}</td>
+          <td>{{building.address.pin}}</td>
+          <td>{{building.contact.email}}</td>
+
+      </tbody>
+    </table>
+  </div>
+  </div>
+</div>
+
+
+

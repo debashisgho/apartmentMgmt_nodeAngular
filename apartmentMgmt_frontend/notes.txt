@@ -1,0 +1,21 @@
+trying to rewrite the apartmentmgmt application in angular 7
+
+NOT WORKING
+------------
+Log out is not WORKING
+log in is not working
+room.component.html > (ngModelChange)="selectedTowerIdChangeHandler($event)
+
+deferred
+----------
+add new building
+
+
+currently WORKING
+------------------
+add rooms -- check if functionality is working
+
+references
+----------
+name="towerOptions" id="towerOptions"  [(ngModel)]="selectedTowerId"
+<option *ngFor="let tower of towers" value="{{tower._id}}">{{tower.name}}</option>

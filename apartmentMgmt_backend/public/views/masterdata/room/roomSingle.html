@@ -1,0 +1,201 @@
+<div ng-show="!buildingInfo.$dirty" ng-class="{'bg-danger': response.status == 'F' , 'bg-success': response.status == 'S'} ">
+   {{response.status}} {{response.message}}
+</div>
+<br><br>
+<div class="clearfix">
+   <button type="button" class="btn btn-info btn-large pull-right" ng-click="editForm()">{{formEditButtonText}}</button>
+</div>
+<div class="panel panel-default" ng-init="getRoomById()">
+   <div class="panel-heading">
+      <h3 class="panel-title pull-left">Master Data > Building > Tower > Room > Single Room > {{room.roomNo}}</h3>
+      <div class="clearfix"></div>
+   </div>
+   <div class="panel-body">
+      <div class="row">
+         <div class="col-md-12">
+            <form ng-submit="updateRoom()" name="roomUpdate">
+               <input type="hidden" name="_csrf" />
+               <div class="form-group">
+                  <label for="roomNo">Room No.</label>
+                  <input type="text" class="form-control" id="roomNo" placeholder="Room Number" ng-model="room.roomNo" ng-disabled="!formEditMode">
+               </div>
+               <!-- <div class="form-group">
+                  <label for="tower">Tower</label>
+                  <input type="text" class="form-control" id="tower" placeholder="Tower" ng-model="room.tower">
+               </div> -->
+               <div class="form-group">
+                  <label for="tower">Tower</label>
+                  <select name="towerOptions" id="towerOptions" ng-model="selectedTowerId" class="form-control" ng-disabled="!formEditMode">
+                    <option ng-repeat="tower in towers" value="{{tower._id}}">{{tower.name}}</option>
+                  </select>
+
+               </div>
+
+               
+
+               <div class="form-group">
+                  <label for="floorNo">Floor No</label>
+                  <input type="text" class="form-control" id="floorNo" placeholder="Floor Number" ng-model="room.floorNo" ng-disabled="!formEditMode">
+               </div>
+               <div class="form-group">
+                  <label for="area">Area</label>
+                  <div class="input-group">
+                     <input type="text" class="form-control" id="area" placeholder="Carpet Area" ng-model="room.area_details.area" ng-disabled="!formEditMode">
+                     <span class="input-group-addon">
+                     {{measurementAreaUnit}}
+                     </span>
+                  </div>
+               </div>
+               <!-- owner details -->
+               <!-- current owner -->
+               <uib-accordion>
+                  <div uib-accordion-group class="panel-default" heading="Owners">
+                     <div class="col-md-12 ">
+                        <div class="form-group" ng-repeat="currOwner in room.owner_details.current track by $index">
+                           <div class="input-group">
+                              <!-- <input type="text" class="form-control" id="currOwner" placeholder="Currently owned by" ng-model="room.owner_details.current[$index].name.fullName">
+                              <a href="" class="input-group-addon nounderline" ng-click="deleteCurrentOwner()">
+                              Remove</a> -->
+
+                              <input type="text" ng-model="room.owner_details.current[$index].userDetails" placeholder="Currently owned by" uib-typeahead="member as member.name.last+','+member.name.first for member in getMembersOfBuilding($viewValue)| limitTo:8" typeahead-loading="loadingMembers" 
+                                 typeahead-no-results="noResults" class="form-control" ng-disabled="!formEditMode" ng-hide="!formEditMode">
+                              <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+
+                              <span  ng-hide="formEditMode"  class="form-control">
+                              <a href="/aptmgmt/masterdata/user/{{room.owner_details.current[$index]._id}}">{{room.owner_details.current[$index].name.last}},{{room.owner_details.current[$index].name.first}}</a>
+                              </span>
+
+                              <a href="" class="input-group-addon nounderline" ng-click="deleteCurrentOwner()">
+                              Remove</a>
+                              
+                              
+                           </div>
+                          </div>
+                     </div>
+                     <button type="button" class="btn btn-info form-control" ng-click="addCurrentOwner()" ng-disabled="!formEditMode">Add Current Owner</button>
+                     <br>
+                     <br>
+                     <!-- previous owner -->
+                     <uib-accordion>
+                        <div uib-accordion-group class="panel-default" heading="Previous Owners">
+                           <div class="col-md-12 ">
+                              <div class="form-group" ng-repeat="prevOwner in room.owner_details.previous track by $index">
+                                 <div class="input-group">
+                                    <input type="text" class="form-control" id="prevOwner" placeholder="Previously owned by" ng-model="room.owner_details.previous[$index].name.fullName">
+                                    <a href="" class="input-group-addon nounderline" ng-click="deletePreviousOwner()">
+                                    Remove</a>
+                                 </div>
+                                 <div class="form-inline">
+                                    <div class="form-group">
+                                       <label for="prevOwnerFrom">From</label>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="room.owner_details.previous[$index].fromDate" is-open="popUpPrevOwnerFromDate[$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" id="prevOwnerFrom" />
+                                          <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="openPopUpPrevOwnerFromDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                       </div>
+                                       <label for="prevOwnerTo">To</label>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="room.owner_details.previous[$index].toDate" is-open="popUpPrevOwnerToDate[$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" id="prevOwnerTo" />
+                                          <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="openPopUpPrevOwnerToDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <hr>
+                              </div>
+                           </div>
+                           <button type="button" class="btn btn-info form-control" ng-click="addPreviousOwner()">Add Previous Owner</button>
+                        </div>
+                     </uib-accordion>
+                  </div>
+               </uib-accordion>
+               <!-- Rent details -->
+               <!-- current Rent -->
+               <uib-accordion>
+                  <div uib-accordion-group class="panel-default" heading="Rent Details">
+                     <div class="col-md-12 ">
+                        <div class="form-group" ng-repeat="currRent in room.rent_details.current track by $index">
+                           <div class="input-group">
+                              <input type="text" class="form-control" id="currRent" placeholder="Currently rented to" ng-model="room.rent_details.current[$index].name.fullName">
+                              <a href="" class="input-group-addon nounderline" ng-click="deleteCurrentRent()">
+                              Remove</a>
+                           </div>
+                           <div class="form-inline">
+                              <div class="form-group">
+                                 <label for="currRentFrom">From</label>
+                                 <div class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="room.rent_details.current[$index].fromDate" is-open="popUpCurrRentFromDate[$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" id="currRentFrom" />
+                                    <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openPopUpCurrRentFromDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-info form-control" ng-click="addCurrentRent()">Add Current Rent</button>
+                     <br>
+                     <br>
+                     <!-- previous Rent -->
+                     <uib-accordion>
+                        <div uib-accordion-group class="panel-default" heading="Rent history">
+                           <div class="col-md-12 ">
+                              <div class="form-group" ng-repeat="prevRent in room.rent_details.previous track by $index">
+                                 <div class="input-group">
+                                    <input type="text" class="form-control" id="prevRentedTo" placeholder="Previously rented to" ng-model="room.rent_details.previous[$index].name.fullName">
+                                    <a href="" class="input-group-addon nounderline" ng-click="deletePreviousRent()">
+                                    Remove</a>
+                                 </div>
+                                 <div class="form-inline">
+                                    <div class="form-group">
+                                       <label for="prevRentFrom">From</label>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="room.rent_details.previous[$index].fromDate" is-open="popUpPrevRentFromDate[$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" id="prevRentFrom" />
+                                          <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="openPopUpPrevRentFromDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                       </div>
+                                       <label for="prevRentTo">To</label>
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" uib-datepicker-popup="dd-MMMM-yyyy" ng-model="room.rent_details.previous[$index].toDate" is-open="popUpPrevRentToDate[$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" id="prevRentTo" />
+                                          <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="openPopUpPrevRentToDate()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <hr>
+                              </div>
+                           </div>
+                           <button type="button" class="btn btn-info form-control" ng-click="addPreviousRent()">Add Previous Rent</button>
+                        </div>
+                     </uib-accordion>
+                  </div>
+               </uib-accordion>
+               <!-- others living in the same room -->
+               <uib-accordion>
+                  <div uib-accordion-group class="panel-default" heading="Others Living">
+                     <div class="row">
+                        <div class="col-md-12 ">
+                           <div class="form-group" ng-repeat="otherLiving in room.others.othersLiving track by $index">
+                              <div class="input-group">
+                                 <input type="text" class="form-control" id="prevRent" placeholder="Who else lives here" ng-model="room.others.otherLiving[$index]">
+                                 <a href="" class="input-group-addon nounderline" ng-click="deleteOthersLiving()">
+                                 Remove</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <button type="button" class="btn btn-info form-control" ng-click="addOthersLiving()">Add others living</button>
+                  </div>
+               </uib-accordion>
+
+
+               <button type="submit" class="btn btn-primary" ng-hide="!formEditMode">Update</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>

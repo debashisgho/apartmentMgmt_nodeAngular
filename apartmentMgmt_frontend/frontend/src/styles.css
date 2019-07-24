@@ -1,0 +1,101 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+.width50Percent{
+	width: 50%;
+}
+
+.capitalize{
+	text-transform: capitalize;
+}
+
+.nounderline{
+	text-decoration: none !important;
+}
+
+
+/*for panel title for uib-accordion from ui.bootstrap - change color*/
+
+uib-accordion [class=panel-title] a span{
+	color: #337ab7;
+}
+
+/*for anchor tags in panel title for uib-accordion from ui.bootstrap - do not show the underline*/
+
+uib-accordion [class=panel-title] a {
+	text-decoration: none !important;
+}
+
+.btn-info:disabled{
+	color: black !important;
+}
+
+.zz-dropdown-button {
+    color: rgba(255,255,255,.5) !important;
+}
+
+.zz-dropdown-button:hover{
+	color: rgba(255,255,255,.75) !important;
+	box-shadow: none !important;
+}
+.zz-dropdown-button.focus{
+	
+	box-shadow: none !important;
+}
+
+.zz-navbar-right {
+    float: right!important;
+    margin-right: 0px!important;
+}
+
+.dropdown-menu{
+	margin-top: 0.5rem !important;
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+    background-color:#f5f5f5 !important;
+}
+.zz-float-left{
+	float: left !important;
+}
+
+.zz-float-right{
+	float: right !important;
+}
+
+.zz-response{
+	color: white;
+	padding-top: .75rem;
+	padding-right: 1.25rem;
+	padding-left: 1.25rem;
+	padding-bottom: 0.75rem;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color:rgba(0,0,0,.125);
+}
+
+button.calendar,
+button.calendar:active {
+	width: 2.75rem;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=)!important;
+	background-repeat: no-repeat;
+	background-size: 23px;
+	background-position: center
+}
+
+/*
+.zz-link {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.zz-link:focus, .zz-link:hover {
+    color: #23527c;
+	text-decoration: underline;
+	cursor: pointer;
+}
+*/
+
+
+
+

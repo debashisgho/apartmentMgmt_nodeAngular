@@ -1,0 +1,57 @@
+<br>
+<div class="container-fluid">
+
+<div class="card">
+  <div class="card-header">
+    Master Data > Building > {{building.name}} > Room
+  </div>
+  <div class="card-body">
+
+  <div class="container">
+
+               
+  <a class="btn btn-info form-control" routerLink="/aptmgmt/masterdata/building/{{building._id}}/tower/rooms/add">Add new Room</a>
+
+  <br>
+  <br>    
+
+  <select name="towerOptions" id="towerOptions"  [(ngModel)]="selectedTowerId" (ngModelChange)="selectedTowerIdChangeHandler($event)" class="form-control">
+      <option *ngFor="let tower of towers" value="{{tower._id}}">{{tower.name}}</option>
+    </select>
+
+  <br>
+
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr class="active">
+          <th>No.</th>
+          <th>Floor</th>
+          <th>Area</th>
+          <th>Tower</th>
+          <th>Owners</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let room of rooms">
+          <td><a routerLink="/aptmgmt/masterdata/building/tower/room/{{room._id}}">{{room.roomNo}}</a></td>
+          <td>{{room.floorNo}}</td>
+          <td>{{room.area_details.area}} {{room.area_details.measurementUnit}}</td>
+          <td>{{selectedTowerName}}</td>
+          
+          <td *ngIf="room.owner_details.current[0]">{{room.owner_details.current[0].name.last}} {{room.owner_details.current[0].name.first}}</td>
+          <td *ngIf="!room.owner_details.current[0]"></td>
+          <!--
+          -->  
+      </tbody>
+            
+    </table>
+  </div>
+  </div>
+</div>
+  
+</div>
+
+
+
+
