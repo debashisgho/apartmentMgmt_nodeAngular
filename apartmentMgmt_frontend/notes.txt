@@ -13,7 +13,7 @@ add new building
 
 currently WORKING
 ------------------
-add rooms -- check if functionality is working
+room-add.component.ts  > working on addRoom function
 
 references
 ----------

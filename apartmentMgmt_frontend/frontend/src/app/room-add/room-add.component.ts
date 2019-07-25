@@ -19,8 +19,10 @@ export class RoomAddComponent implements OnInit {
   public buildingId : string='';
   public towers:Tower[] = [];
   public room:Room = new Room();
+  public selectedTowerId:string ='';
+  public measurementAreaUnit:string = "Sq.ft.";
   public response: {status:string, message:string} = {status:'', message:''};
-  public tempCurrentOwner
+  
 
   popUpPrevOwnerFromDate =[];
   popUpPrevOwnerToDate =[];
@@ -126,14 +128,22 @@ deleteOthersLiving = function($index:number){
 
 addRoom= function(){
 	console.log("add room function called");
-	$scope.roomAdd.$setPristine();//the form is submitted, so reset to pristine
+//	$scope.roomAdd.$setPristine();//the form is submitted, so reset to pristine
 
 	this.room.building = this.buildingId;
 	this.room.tower = this.selectedTowerId;
 	this.room.area_details.measurementUnit = this.measurementAreaUnit;
-	console.log(this.room);
+  console.log(this.room);
+  /*
+  this._sessionService.addRoom(this.room).subscribe(
+    response =>{
+      console.log(response);
+    }
+  ) */
+}
 
 
+  /*
 	$http.post('/aptmgmt/api/masterdata/building/tower/room', this.room).then(function(response){
 			console.log(response);
 			console.log('-------'+response.data.status+" : "+response.data.message);
@@ -151,6 +161,8 @@ addRoom= function(){
 			
 		});
 };
+
+*/
     
 
    
